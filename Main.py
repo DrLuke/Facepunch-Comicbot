@@ -4,7 +4,6 @@ Created on 22.04.2012
 @author: Lukas 'DrLuke' Jackowski
 '''
 
-import urllib, urllib.request, urllib.error, urllib.parse
 import os, math, time, re, io
 
 from comicBots import *
@@ -43,12 +42,5 @@ if __name__ == '__main__':
 		for bot in bots:
 			bot.remainingdelay = bot.remainingdelay - newDelay
 		time.sleep(newDelay)
-			
 		
-
-
-
-
-
-
-
+		
