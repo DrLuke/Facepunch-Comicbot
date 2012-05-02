@@ -76,17 +76,17 @@ class bot(object):
 		
 
 		urllib.request.urlopen("http://api.facepun.ch/?username=xkcd.com&password=25d55ad283aa400af464c76d713c07ad&action=authenticate")
-			
+		
 		# Check if the comiclarge actually is a large version of the comic, or linking elsewhere
-			
+		
 		if comiclarge == None:
 			postcontent = "[b][url=" + origlink + "]" + comictitle + "[/url][/b]\n\n[img]" + comicurl + "[/img]\n\n[i]" + comiccaption + "[/i]"
 		else:
 			postcontent = "[b][url=" + origlink + "]" + comictitle + "[/url][/b]\n\n[url="+ comiclarge +"][img]" + comicurl + "[/img][/url]\n\n[i]" + comiccaption + "[/i]"
-					
+		
 		# Encode it to utf8 format
 		data = urllib.parse.urlencode({"thread_id": "1178182", "message":postcontent}).encode("utf-8")
-			
+		
 		# Post the comic
 		post = urllib.request.urlopen("http://api.facepun.ch/?username=xkcd.com&password=25d55ad283aa400af464c76d713c07ad&action=newreply",data)
 		postreturn = post.read().decode("utf-8")
@@ -103,7 +103,6 @@ class bot(object):
 				self.debugfile.write("Failed to post comic, will retry at next interval\n")
 		except:
 			self.debugfile.write("Failed to post comic, will retry at next interval\n")
-
-			
+		
 		# Apply everything written to the debugfile
 		self.debugfile.flush()
