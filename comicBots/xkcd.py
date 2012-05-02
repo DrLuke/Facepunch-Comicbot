@@ -74,34 +74,36 @@ class bot(object):
 		self.debugfile.write("["+ timestring +"]Found new comic titled '" + comictitle + "'\n")
 		self.debugfile.write("Attempting to post comic\n")
 		
-		tries = 10
-		while(tries):
-			urllib.request.urlopen("http://api.facepun.ch?username=xkcd.com&password=25d55ad283aa400af464c76d713c07ad&action=authenticate")
+
+		urllib.request.urlopen("http://api.facepun.ch/?username=xkcd.com&password=25d55ad283aa400af464c76d713c07ad&action=authenticate")
 			
-			# Check if the comiclarge actually is a large version of the comic, or linking elsewhere
+		# Check if the comiclarge actually is a large version of the comic, or linking elsewhere
 			
-			if comiclarge == None:
-				postcontent = "[b][url=" + origlink + "]" + comictitle + "[/url][/b]\n\n[img]" + comicurl + "[/img]\n\n[i]" + comiccaption + "[/i]"
-			else:
-				postcontent = "[b][url=" + origlink + "]" + comictitle + "[/url][/b]\n\n[url="+ comiclarge +"][img]" + comicurl + "[/img][/url]\n\n[i]" + comiccaption + "[/i]"
+		if comiclarge == None:
+			postcontent = "[b][url=" + origlink + "]" + comictitle + "[/url][/b]\n\n[img]" + comicurl + "[/img]\n\n[i]" + comiccaption + "[/i]"
+		else:
+			postcontent = "[b][url=" + origlink + "]" + comictitle + "[/url][/b]\n\n[url="+ comiclarge +"][img]" + comicurl + "[/img][/url]\n\n[i]" + comiccaption + "[/i]"
 					
-			# Encode it to utf8 format
-			data = urllib.parse.urlencode({"thread_id": "1178182", "message":postcontent}).encode("utf-8")
+		# Encode it to utf8 format
+		data = urllib.parse.urlencode({"thread_id": "1178182", "message":postcontent}).encode("utf-8")
 			
-			# Post the comic
-			post = urllib.request.urlopen("http://api.facepun.ch/?username=xkcd.com&password=25d55ad283aa400af464c76d713c07ad&action=newreply",data)
-			postreturn = post.read().decode("utf-8")
-			postjsonobj = json.loads(postreturn)
-			tries = tries - 1
+		# Post the comic
+		post = urllib.request.urlopen("http://api.facepun.ch/?username=xkcd.com&password=25d55ad283aa400af464c76d713c07ad&action=newreply",data)
+		postreturn = post.read().decode("utf-8")
+		postjsonobj = json.loads(postreturn)
+		print(postreturn)
+		try:
 			if postjsonobj["reply"] == "OK":
 				self.debugfile.write("New comic posted succesfully\n")
-				tries = False
 				file = open(os.path.join(self.scriptpath, "prevcomic","xkcd"), "w", encoding="utf-8")
-				self.prevcomic = file.write(comictitle)
+				file.write(comictitle)
+				self.prevcomic = comictitle
 				file.close()
-			elif tries == 0:
+			else:
 				self.debugfile.write("Failed to post comic, will retry at next interval\n")
-				tries = False
+		except:
+			self.debugfile.write("Failed to post comic, will retry at next interval\n")
+
 			
-			# Apply everything written to the debugfile
-			self.debugfile.flush()
+		# Apply everything written to the debugfile
+		self.debugfile.flush()
