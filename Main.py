@@ -29,7 +29,7 @@ if __name__ == '__main__':
 	scriptpath = os.path.dirname(__file__)
 	
 	
-	bots = [xkcd.bot(scriptpath), smbc.bot(scriptpath)]
+	bots = [xkcd.bot(scriptpath)]
 	
 	while(True):
 		updategit()

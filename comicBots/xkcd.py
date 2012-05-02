@@ -18,7 +18,7 @@ class bot(object):
 		'''
 		Constructor
 		'''
-		self.delay = 7
+		self.delay = 3600
 		self.remainingdelay = 0
 		self.scriptpath = scriptpath
 		self.debugfile = open(os.path.join(self.scriptpath, "logs", "xkcd"), "a")
