@@ -63,6 +63,11 @@ class bot(object):
 					
 			if self.prevcomic == comictitle:
 				pass
+			elif self.prevcomic == "":
+				file = open(os.path.join(self.scriptpath, "prevcomic","xkcd"), "w", encoding="utf-8")
+				file.write(comictitle)
+				self.prevcomic = comictitle
+				file.close()
 			else:
 				self.post(comictitle, comicurl, comiccaption, origlink, comiclarge)
 				pass
@@ -71,7 +76,7 @@ class bot(object):
 	
 	def post(self, comictitle, comicurl, comiccaption, origlink, comiclarge):
 		timestring = time.strftime("%a, %d %b %Y %H:%M:%S")
-		self.debugfile.write("["+ timestring +"]Found new comic titled '" + comictitle + "'\n")
+		self.debugfile.write("["+ timestring +"] Found new comic titled '" + comictitle + "'\n")
 		self.debugfile.write("Attempting to post comic\n")
 		
 
@@ -85,13 +90,12 @@ class bot(object):
 			postcontent = "[b][url=" + origlink + "]" + comictitle + "[/url][/b]\n\n[url="+ comiclarge +"][img]" + comicurl + "[/img][/url]\n\n[i]" + comiccaption + "[/i]"
 		
 		# Encode it to utf8 format
-		data = urllib.parse.urlencode({"thread_id": "1178182", "message":postcontent}).encode("utf-8")
+		data = urllib.parse.urlencode({"thread_id": "1179406", "message":postcontent}).encode("utf-8")
 		
 		# Post the comic
 		post = urllib.request.urlopen("http://api.facepun.ch/?username=xkcd.com&password=25d55ad283aa400af464c76d713c07ad&action=newreply",data)
 		postreturn = post.read().decode("utf-8")
 		postjsonobj = json.loads(postreturn)
-		print(postreturn)
 		try:
 			if postjsonobj["reply"] == "OK":
 				self.debugfile.write("New comic posted succesfully\n")
