@@ -51,7 +51,7 @@ class bot(object):
 			if comictitle == self.prevcomic:
 				pass
 			elif self.prevcomic == "":
-				file = open(os.path.join(self.scriptpath, "prevcomic","xkcd"), "w", encoding="utf-8")
+				file = open(os.path.join(self.scriptpath, "prevcomic","smbc"), "w", encoding="utf-8")
 				file.write(comictitle)
 				self.prevcomic = comictitle
 				file.close()
